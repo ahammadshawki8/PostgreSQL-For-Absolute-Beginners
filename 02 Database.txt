@@ -1,0 +1,23 @@
+***Create
+# Every single command in psql atarts with a backslash. \ 
+-> For quiting psql -> \q
+-> For clear screen -> \! cls
+-> for entering again -> psql
+-> for help -> \h
+-> for more help -> \?
+-> list of databases -> \l
+-> creating database -> CREATE DATABASE database_name;
+
+*** Connect
+	psql -h hostname -p port -U username -W password database_name
+or, 
+	run psql from the beginning
+or, 
+	\c database_name
+#	\c means connect
+
+***Delete
+-> deleting database -> DROP DATABASE database_name;
+
+NOTE: If we REALLY want to delete our database, 
+then we must should have a BACKUP for that data.

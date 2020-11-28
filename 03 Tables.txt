@@ -1,0 +1,52 @@
+***Create
+# we need to write this command
+
+CREATE TABLE table_name (
+	Column_name  data_type  constraints_if_any
+)
+
+
+# if we represent people in our database we will have
+
+ CREATE TABLE person (
+ 	id INT,
+	first_name VARCHAR(50),
+	last_name VARCHAR(50),
+	gender VARCHAR(6),
+	date_of_birth DATE)
+
+# INT -> intergers
+# VARCHAR(max_length) -> strings 
+# TIMESTAMP -> full date (including hour-minutes-seconds)
+# DATE -> full date (excluding hour-minutes-seconds)
+
+# all datatypes in postgres
+https://www.postgresql.org/docs/9.5/datatype.html
+
+
+***Creating Tables Without Constraints
+-> to see all the tables in a database -> \d 
+\d means describe
+-> to see all the columns in a table -> \d table_name
+
+
+***Creating table with constraints
+user should satisfy this constraints in order to put data in this table,
+CREATE TABLE person (
+ 	id BIGSERIAL NOT NULL PRIMARY KEY,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	gender VARCHAR(6) NOT NULL,
+	date_of_birth DATE NOT NULL,
+	email VARCHAR(32) );
+
+# They can't be NULL
+# BIGSERIAL datatype incriment by itself
+# and the id is the PRIMARY KEY of this table
+# meaning it uniquely identify a person
+# we can see that we have a sequence here which is for the BIGSERIAL
+
+***Delete
+-> deleting tables -> DROP TABLE table_name;
+
+NOTE: very carefull

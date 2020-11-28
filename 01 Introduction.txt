@@ -1,0 +1,22 @@
+***What is a DataBase?
+=> A DataBase is a place from where we can store, manipulate and retrive data.
+in database, the data is stored in tables [formed with columns and rows]
+
+***What is SQL?
+=> Sql is the structured query language.
+Sql allows us to manage data in a relational database.
+
+***What is a relational database?
+=> is a kind of database where we have relations between one or more tables.
+
+***What is PostgreSQL?
+PostgreSQL is a powerful, open source object-relational database system 
+with over 30 years of active development 
+that has earned it a strong reputation for reliability, feature robustness, and performance.
+
+# Now we will download the PostgreSql in our machine.
+
+***GUI clients vs terminal clients:
+we can use postgresql by GUI or terminal or a application, but we will use terminal throughout the series.
+
+# Now we will Setup PSQL.
