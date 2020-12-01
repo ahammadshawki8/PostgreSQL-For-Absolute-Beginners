@@ -1,0 +1,65 @@
+***SELECT
+-> select all rows -> SELECT * FROM table_name;
+# * means everything
+
+-> select any column -> SELECT column_name FROM table_name;
+-> select multiple column -> SELECT column1_name, column2_name FROM table_name;
+
+
+
+***Sort
+# we are going to use ORDER BY command to sort our data
+# we can sort our datain two orders
+-> ascending -> ASC  [default]
+-> descending -> DESC
+
+# for sorting
+-> SELECT * FROM table_name ORDER BY column_name as sorting_order;
+
+# we can also combine multiple columns when we sort
+-> SELECT * FROM table_name ORDER BY column1_name,column2_name as sorting_order;
+
+
+
+***Distinct
+# if we only select the country we can see that we have lots of duplicates
+# But sometimes we just want to know the unique countries of the table.
+# to do that we can,
+-> SELECT DISTINCT column_name FROM table_name ORDER BY column_name as sorting_order;
+
+
+
+***Where Clause and And and OR
+-> criteria in column -> SELECT * FROM table_name WHERE column_name = 'expected_data';
+-> multiple criteria -> SELECT * FROM table_name WHERE column1_name = 'expected_data1' AND column2_name = 'expected_data2';
+# we can also use OR Clause
+
+-> combining more than two criteria -> SELECT * FROM table_name WHERE column1_name = 'expected_data1' AND (column2_name = 'expected_data2' OR column3_name = 'expected_data3');
+# and so on ....
+
+
+
+***Comparison Opertors
+# if we do this command
+-> SELECT 1 = 1;
+# it will give us t (meaning TRUE)
+# again
+-> SELECT 1 = 2;
+# it will give us f (meaning FALSE)
+# we also have
+-> != Not equal to   or   <> Not equal to
+-> > Greater than
+-> < Less than
+-> >= Greater than or equal to
+-> <= Less than or equal to
+-> !> Not Greater Than 
+-> !< Not Less Than 
+
+# we can use this comparisons in not only int but all data types.
+# casing matters in string
+
+# We can use this operators to filter down our data in the Clause
+
+
+
+***Limit, Offset & Fetch

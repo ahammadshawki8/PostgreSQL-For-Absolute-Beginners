@@ -1,0 +1,56 @@
+***Insert records
+# we have to write the following command
+
+INSERT INTO table_name (
+	column_name
+)
+VALUES (value_of_column);
+
+
+# So for our case -
+
+INSERT INTO person (
+	first_name,
+	last_name,
+	gender,
+	date_of_birth
+)
+VALUES ('Anne', 'Smith', 'Female', '1988-01-09');
+
+# If we dont want to add email then we can keep it null or don't mention it in the INSERT INTO.
+
+INSERT INTO person (
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email
+)
+VALUES ('Java', 'Kale', 'Female', '1992-01-10', null);
+
+
+# If we want to add email too then
+
+INSERT INTO person (
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email
+)
+VALUES ('Ahammad', 'Shawki', 'Male', '2004-12-28', 'ahammadshawki8@gmail.com'); 
+
+# we have to use single quotes for strings.
+# we can see that the id(BIGSERIAL) is auto incrimented
+
+
+# Lets insert a thousand more people to our table and also add a new column
+# we are going to use the Mockaroo website
+# we will open the .sql file with an ide
+# we can see that here we have 1000 of data
+
+***Opening File
+-> opening the sql file in psql -> \i file_path
+
+***Adding new column
+-> currently creating the whole table again

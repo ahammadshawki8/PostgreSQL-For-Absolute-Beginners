@@ -44,7 +44,11 @@ CREATE TABLE person (
 # BIGSERIAL datatype incriment by itself
 # and the id is the PRIMARY KEY of this table
 # meaning it uniquely identify a person
+
+# Now if we use \d command to see the realtions,
 # we can see that we have a sequence here which is for the BIGSERIAL
+# if we want to only see the tables, not the sequence,
+# then we can use \dt command
 
 ***Delete
 -> deleting tables -> DROP TABLE table_name;

@@ -1,5 +1,6 @@
 ***Create
 # Every single command in psql atarts with a backslash. \ 
+-> opening PSQL in cmd or powershell -> psql -U user_name
 -> For quiting psql -> \q
 -> For clear screen -> \! cls
 -> for entering again -> psql
