@@ -34,7 +34,8 @@
 -> multiple criteria -> SELECT * FROM table_name WHERE column1_name = 'expected_data1' AND column2_name = 'expected_data2';
 # we can also use OR Clause
 
--> combining more than two criteria -> SELECT * FROM table_name WHERE column1_name = 'expected_data1' AND (column2_name = 'expected_data2' OR column3_name = 'expected_data3');
+-> combining more than two criteria -> 
+SELECT * FROM table_name WHERE column1_name = 'expected_data1' AND (column2_name = 'expected_data2' OR column3_name = 'expected_data3');
 # and so on ....
 
 
@@ -63,3 +64,62 @@
 
 
 ***Limit, Offset & Fetch
+# What if we want to slect only the very first 10 rows?
+-> we can do that -> SELECT * FROM table_name LIMIT 10;
+
+# What if we want the second 10 rows?
+-> we can do that -> SELECT * FROM table_name OFFSET 10 LIMIT 10;
+# Offset means we want to skip them.
+
+# What will happen if we remove the limit and use only offset?
+-> it will skip those rows and print others -> SELECT * FROM table_name OFFSET 10;
+
+# there is another keyword which allows us to do the same thing
+-> if we want to print the first 5 rows -> SELECT * FROM table_name FETCH FIRST 5 ROW ONLY;
+# we can also use offset with fetch
+
+# If we want to print the first 1 row we can,
+-> SELECT * FROM table_name LIMIT 1;
+-> SELECT * FROM table_name FETCH FIRST 1 ROW ONLY;
+-> SELECT * FROM table_name FETCH FIRST ROW ONLY;
+
+
+
+***In
+# What if we want to select everyone from Brazil or China or France?
+-> we can do that -> SELECT * FROM person WHERE country_of_birth = 'Brazil' OR country_of_birth = 'China' OR country_of_birth = 'France';
+# but here we used lot of codes
+# we can also use In keyword
+-> SELECT * FROM table_name WHERE column_name IN (value1, value2, value3);
+
+
+
+***Between
+# Between keyword is used to select data from a range.
+-> for printing them who born between 2017 and 2019 
+-> SELECT * FROM person WHERE date_of_birth BETWEEN DATE '2017-01-01' AND '2019-12-31';
+
+
+
+***Like and iLike
+# Like operator used to match strings with patterns using wild cards [simmilar to regex]
+-> finding emails which ends with .gov 
+-> SELECT * FROM person WHERE email LIKE '%.gov';
+# Here % means any number of character
+
+-> finding emails which have google domain
+-> SELECT * FROM person WHERE email LIKE '%@google.%';
+
+# we can also use _
+# _ means any single character
+-> finding emails which have 6 characters
+-> SELECT * FROM person WHERE email LIKE '______@%';
+
+-> finding any country which starts with B
+-> SELECT * FROM person WHERE country_of_birth LIKE 'b%';
+# if we run this command we will get nothing, because countries name starts with capital letter
+> SELECT * FROM person WHERE country_of_birth LIKE 'B%';
+# So we have to explicitely put an uppercase B
+
+# Here we can use the ilike command. it simply ignores casing.
+-> SELECT * FROM person WHERE country_of_birth ILIKE 'b%';

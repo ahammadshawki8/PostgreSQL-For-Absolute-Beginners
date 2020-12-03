@@ -3,6 +3,7 @@
 -> opening PSQL in cmd or powershell -> psql -U user_name
 -> For quiting psql -> \q
 -> For clear screen -> \! cls
+-> For exiting current session -> q
 -> for entering again -> psql
 -> for help -> \h
 -> for more help -> \?

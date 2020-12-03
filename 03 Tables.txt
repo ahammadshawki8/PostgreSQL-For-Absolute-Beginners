@@ -3,7 +3,7 @@
 
 CREATE TABLE table_name (
 	Column_name  data_type  constraints_if_any
-)
+);
 
 
 # if we represent people in our database we will have
@@ -13,7 +13,8 @@ CREATE TABLE table_name (
 	first_name VARCHAR(50),
 	last_name VARCHAR(50),
 	gender VARCHAR(6),
-	date_of_birth DATE)
+	date_of_birth DATE
+);
 
 # INT -> intergers
 # VARCHAR(max_length) -> strings 
@@ -38,7 +39,8 @@ CREATE TABLE person (
 	last_name VARCHAR(50) NOT NULL,
 	gender VARCHAR(6) NOT NULL,
 	date_of_birth DATE NOT NULL,
-	email VARCHAR(32) );
+	email VARCHAR(32) 
+);
 
 # They can't be NULL
 # BIGSERIAL datatype incriment by itself

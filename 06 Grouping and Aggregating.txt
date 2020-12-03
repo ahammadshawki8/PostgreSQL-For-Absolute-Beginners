@@ -1,0 +1,30 @@
+***Group By 
+# It is very powerful keyword.
+# It helps us to group our data based on column.
+# Lets say we want to find out how many people we have for each of the country.
+
+-> To see all the countries -> SELECT DISTINCT country_of_birth FROM person;
+-> grouping by the country -> SELECT country_of_birth FROM person GROUP BY country_of_birth;
+# Here we can see that we are grouping by the country but we aren't printing the counts for each one.
+-> To print the count too -> SELECT country_of_birth, COUNT(*) FROM person GROUP BY country_of_birth;
+# Here COUNT() is a aggregate function and we are counting every single person by *
+# aggregate function computes a single result from a set of values.
+# We can find all the aggregate function in this link below:
+https://www.postgresql.org/docs/9.5/functions-aggregate.html
+
+
+
+
+***Group By Having
+# This command allows us to perform an extra filtering after we perform the group by.
+# Group by and having needs to be distinguished.
+# having is used before order by.
+
+# Lets say we want to print all the countries which have atleast 20 people
+-> SELECT country_of_birth, COUNT(*) FROM person GROUP BY country_of_birth HAVING COUNT(*) >= 20;
+-> organize the data
+-> SELECT country_of_birth, COUNT(*) FROM person GROUP BY country_of_birth HAVING COUNT(*) >= 20 ORDER BY COUNT(*);
+
+
+
+# Now, we will create a brand new table from mockaroo.
