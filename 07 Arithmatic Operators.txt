@@ -1,0 +1,48 @@
+***Basics
+# addition
+-> SELECT 10 + 7;
+
+# substraction
+-> SELECT 10 - 7;
+
+# multiplication
+-> SELECT 10 * 7;
+
+# floor division
+-> SELECT 10 / 7;
+
+# Power 
+-> SELECT 2 ^ 10;
+
+# Modulo
+-> SELECT 10 % 7;
+
+# Factorial
+-> SELECT 5!;
+
+# combining operations
+-> SELECT 10 * 2 - 8;
+# BODMAS/PEMDAS
+
+# using the brackets
+-> SELECT 10 * (2 - 8);
+-> SELECT 10 * (2 + (8 + 7 * 6));
+
+
+
+*** ROUND
+# lets say we want to display a discount price column using a query
+-> SELECT id, make, model, price, (price * 0.1) FROM car; 
+# lets round the discount
+-> SELECT id, make, model, price, ROUND((price * 0.1), 2) FROM car; 
+# now we want to add a column with final price after discount,
+-> SELECT id, make, model, price, ROUND((price * 0.1), 2), price - ROUND((price * 0.1), 2) FROM car; 
+
+# we can see that the column names are not correct
+# by default, if we dont use the column anme postgres will use the actual function name as the column name,
+# if we don't use any function, then postgres will use ?column?
+
+
+*** Alias
+# Alias is used for overriding any column name
+-> SELECT id, make, model, price AS original_price, ROUND((price * 0.1), 2) AS discount, price - ROUND((price * 0.1), 2) AS discounted_price FROM car; 

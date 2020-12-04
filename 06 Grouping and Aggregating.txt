@@ -27,4 +27,38 @@ https://www.postgresql.org/docs/9.5/functions-aggregate.html
 
 
 
-# Now, we will create a brand new table from mockaroo.
+# Now, we will create a brand new car table from mockaroo.
+
+
+
+***Max, Min and Avarage
+# Lets find out the most expensive car
+-> SELECT MAX(price) FROM car;
+# For printing the lest expensive car
+-> SELECT MIN(price) FROM car;
+# we can also get the Avarage
+-> SELECT AVG(price) FROM car;
+
+# here we can round the values with ROUND() function,
+-> SELECT ROUND(AVG(price)) FROM car;
+# we can pass another arguement in the round method just like python,
+-> SELECT ROUND(AVG(price), 2) FROM car;
+
+# we can also group the data and see minimum car price for each make
+-> SELECT make, MIN(price) FROM car GROUP BY make ORDER by MIN(price);
+# for max price
+-> SELECT make, MAX(price) FROM car GROUP BY make ORDER by MAX(price) DESC;
+# for avarage price
+-> SELECT make, ROUND(AVG(price)) FROM car GROUP BY make ORDER by AVG(price) DESC;
+
+# We can also group by multiple columns
+-> SELECT make, model, MAX(price) FROM car GROUP BY make, model ORDER by MAX(price) DESC;
+
+
+
+***Sum
+# lets sum the total price of every single car of our table
+-> SELECT SUM(price) FROM car;
+
+# Now lets see the total sum by the actual car make
+-> SELECT make, SUM(price) FROM car GROUP BY make ORDER BY SUM(price) DESC;
