@@ -1,1 +1,45 @@
 ***Coalesce
+# it allows us to have a default value incase the first one is not present
+-> SELECT COALESCE(1) AS number;
+# what if we have the first value of coalesce null?
+-> SELECT COALESCE(null, 1) AS number;
+# it gives the default value 1
+
+# we can also have multiple param
+# if the first is not present, if that one isn't present try second, if that not, try third.....
+-> SELECT COALESCE(null, null, 1) AS number;
+-> SELECT COALESCE(null, 5, 1) AS number;
+
+# Lets say we want to enter a value 'EMAIL NOT PROVIDED' for those people who don't have email
+-> SELECT id, first_name, last_name, COALESCE(email, 'EMAIL NOT PROVIDED') AS email FROM person;
+
+# coalesce is very powerful tool. 
+# All arguements in the COALESCE() must be of same datatype.
+
+
+
+***Nullif
+# what if we want to divide something by 0
+-> SELECT 10 / 0; 
+# we get an error [ERROR:  division by zero]
+
+# we can tackle this with Nullif
+# nullif takes two arguement,
+# if the firts one is equl to second one, then it returns null
+# else, the first one
+-> SELECT NULLIF(10, 10);
+-> SELECT NULLIF(10, 5);
+
+# this can be very handy.
+# because if we divide something by null, we won't get an error
+-> SELECT 10 / null; 
+
+# So, if we use 0 in the nullif as the second arguement
+-> SELECT 10 / NULLIF(8, 0);
+# in the place of 8 we can use any other number,
+# but if we use 0, it wil return null
+-> SELECT 10 / NULLIF(0, 0);
+
+# we can mix those two commands
+-> SELECT COALESCE(10 / NULLIF(0, 0), 0);
+# this trick is useful when we need to change all the 0's of a specific column to another number.
