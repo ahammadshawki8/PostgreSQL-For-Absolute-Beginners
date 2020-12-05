@@ -1,0 +1,62 @@
+***Dates & Timestamps
+# we can print todays timestamp using NOW() function
+-> SELECT NOW();
+# timestamp is a combination of date and time
+-> for printing the date only -> SELECT NOW()::DATE;
+-> for printing the time only -> SELECT NOW()::TIME;
+
+# postgresql have some documentations on date and time types.
+https://www.postgresql.org/docs/current/datatype-datetime.html
+
+
+# we have already used the DATE type in our column
+
+
+***Adding and Substracing Dates
+# what if we want to substrac 1 year from now?
+-> SELECT NOW() - INTERVAL '2 YEAR';
+# here interval is a special keyword
+
+# we can also substract months and days.
+-> SELECT NOW() - INTERVAL '10 MONTH';
+-> SELECT NOW() - INTERVAL '23 DAY';
+
+# we can also add 
+-> SELECT NOW() + INTERVAL '2 YEAR';
+-> SELECT NOW() + INTERVAL '10 MONTH';
+-> SELECT NOW() + INTERVAL '23 DAY';
+
+#  we can also combine them
+-> SELECT NOW() - INTERVAL '2 YEAR 10 MONTH 23 DAY';
+-> SELECT NOW() + INTERVAL '2 YEAR 10 MONTH 23 DAY';
+
+# if we want to see only date after add/sub 
+-> SELECT (NOW() + INTERVAL '10 MONTH')::DATE;
+-> SELECT (NOW() - INTERVAL '10 MONTH')::DATE;
+# here the entire expression gives us a time stamp,
+# so we have to wrap the whole expression.
+
+# We can also do the same thing using HOUR, MINUTE and SECOND
+-> SELECT NOW() + INTERVAL '2 HOUR';
+-> SELECT NOW() - INTERVAL '2 MINUTE';
+-> SELECT NOW() + INTERVAL '2 SECOND';
+
+
+***Extracting Fields From Timestamp
+# now we will extract specific values from timestamps
+-> printing the year            -> SELECT EXTRACT(YEAR FROM NOW());
+-> printing the month           -> SELECT EXTRACT(MONTH FROM NOW());
+-> printing the day             -> SELECT EXTRACT(DAY FROM NOW());
+-> printing the Day of the week -> SELECT EXTRACT(DOW FROM NOW());   
+-> printing the century         -> SELECT EXTRACT(CENTURY FROM NOW());   
+-> printing the hour            -> SELECT EXTRACT(HOUR FROM NOW());
+-> printing the minute          -> SELECT EXTRACT(MINUTE FROM NOW());
+-> printing the second          -> SELECT EXTRACT(SECOND FROM NOW());
+
+
+
+***AGE function
+# what if we want to create an age column 
+# we can use AGE() function, it takes two argument, current date and date_of_birth.
+-> SELECT id, first_name, last_name, (AGE(NOW(), date_of_birth)) AS age FROM person ORDER by age DESC;
+# we can also extract the specific fields from here.
