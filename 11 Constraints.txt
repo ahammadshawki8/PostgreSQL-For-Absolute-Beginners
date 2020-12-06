@@ -1,0 +1,159 @@
+***Unique Constraint 
+# it allows us to have unique constraint to a specific column.
+
+# lets group the table by email
+-> SELECT email, COUNT(*) FROM person GROUP BY email; 
+
+# lets see if there are any duplicate emails or not,
+-> SELECT email, COUNT(*) FROM person GROUP BY email HAVING COUNT(*) > 1; 
+# there are no duplicate
+
+# lets add duplicate emails,
+-> insert into person (
+	id,
+	first_name, 
+	last_name, 
+	gender, 
+	date_of_birth, 
+	email, 
+	country_of_birth
+) 
+values (1001, 'Mad', 'Max', 'Male', '2020-03-06', 'pvanzon0@si.edu', 'China');
+
+# now if we search for duplicate emails,
+-> SELECT email, COUNT(*) FROM person GROUP BY email HAVING COUNT(*) > 1;
+
+# we see that we have 2 emails that are same,
+# we can actually print them,
+-> SELECT * FROM person WHERE email = 'email_name'; 
+
+# now if we want to send email to one of the people with same email address,
+# we will be in a big trouble.
+
+# Here unique constraints comes to play.
+# lets add the constraint,
+-> ALTER TABLE table_name ADD CONSTRAINT cons_name UNIQUE(columns);
+# inside the brackets we can pass multiple columns to be unique.
+
+# but if we run this command we will get an error.
+ERROR:  could not create unique index "person_unique_email"
+DETAIL:  Key (email)=(pvanzon0@si.edu) is duplicated.
+
+# so we have to delete the record which have duplicate emails,
+-> DELETE FROM person WHERE first_name = 'Mad';
+# or we can make the email address nullable.
+
+# now if we try to add the unique constraint again,
+-> ALTER TABLE table_name ADD CONSTRAINT cons_name UNIQUE(columns);
+
+# Now if we describe the table -> \d person;
+# we can see the unique constraint here,
+"person_unique_email" UNIQUE CONSTRAINT, btree (email)
+
+# now if we want to add a person with dupliacte email
+-> insert into person (
+	id,
+	first_name, 
+	last_name, 
+	gender, 
+	date_of_birth, 
+	email, 
+	country_of_birth
+) 
+values (1001, 'Mad', 'Max', 'Male', '2020-03-06', 'pvanzon0@si.edu', 'China');
+# we can't add the row.
+
+# let us delete the constraint,
+-> ALTER TABLE person DROP CONSTRAINT person_unique_email;
+# if we describe the table again. 
+-> \d person;
+# we can see that, the constraint has gone.
+
+# The other way we cn pass the unique constraint by,
+-> ALTER TABLE person ADD UNIQUE(email);
+
+# the difference between first way and second way is,
+# now we let the constriant name be defined by postgres.
+
+# if we describe the table
+-> \d person;
+# we can see that, the default name is "person_email_key" UNIQUE CONSTRAINT, btree (email).
+
+
+# difference between primary key and unique constraint,
+# all primary key are unique constraint, but not all .....
+# the extra usecase of primary key is it allows us to identify each record.
+
+
+
+***Check Constraint
+# it allows us to add a constraint based on a boolean condition.
+# in our table, we have a gender column. 
+# here we can technically allow other genders, 
+# but lets say we want only male and females.
+
+# currently, we have only male and female in our table.
+-> SELECT gender, COUNT(*) FROM person GROUP BY gender;
+
+# lets add another person with another gender,
+-> insert into person (
+	id,
+	first_name, 
+	last_name, 
+	gender, 
+	date_of_birth, 
+	email, 
+	country_of_birth
+) 
+values (1001, 'Mad', 'Max', 'Suspicious', '2020-03-06', 'notmale@notfemale.mf', 'China');
+
+# now if we group by the gender again,
+-> SELECT gender, COUNT(*) FROM person GROUP BY gender;
+# we can see that we have a gender which is not actually a man or female.
+
+# check constraitn allow us to do is 
+# that it ensures we input a string which matches either male or female.
+# adding check constraint,
+-> ALTER TABLE person ADD CONSTRAINT gender_cons CHECK(gender = 'Male' OR gender = 'Female');
+
+# we can see that we are getting an error
+ERROR:  check constraint "gender_cons" of relation "person" is violated by some row
+
+# so we have to delete the row of Suspicious gender.
+-> DELETE FROM person WHERE gender = 'Suspicious';
+
+# Now if we see unique genders again,
+# we can also do that by distinct,
+-> SELECT DISTINCT gender FROM person; 
+# we can see that we have only 2 genders.
+
+# now if we add that check constraint again,
+-> ALTER TABLE person ADD CONSTRAINT gender_cons CHECK(gender = 'Male' OR gender = 'Female');
+
+# and if we describe the table.
+-> \d person;
+# we can see that we have a check constraint
+Check constraints:
+    "gender_cons" CHECK (gender::text = 'Male'::text OR gender::text = 'Female'::text)
+
+# now if try to insert that Suspicious person again,
+-> insert into person (
+	id,
+	first_name, 
+	last_name, 
+	gender, 
+	date_of_birth, 
+	email, 
+	country_of_birth
+) 
+values (1001, 'Mad', 'Max', 'Suspicious', '2020-03-06', 'notmale@notfemale.mf', 'China');
+
+# we can see that we are getting an error.
+ERROR:  new row for relation "person" violates check constraint "gender_cons"
+DETAIL:  Failing row contains (1001, Mad, Max, Suspicious, 2020-03-06, notmale@notfemale.mf, China).
+
+# this means our check constraint is working fine.
+
+# Check contraints are very powerful and we can write pretty much any condition in the check constraint.
+# we can also restrict the age, price etc. column by check contraints.
+# These constraints are also known as input validation.

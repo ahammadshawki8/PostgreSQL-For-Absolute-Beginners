@@ -1,0 +1,73 @@
+***Primary_Key
+# we ca use differnt data types for unique primary keys, 
+# But for now BIGSERIAL will work.
+
+-> describing the table -> \d person;
+# we can see that we have "person_pkey" PRIMARY KEY, btree (id) as a primary key.
+
+-> printing the first line -> SELECT * FROM person LIMIT 1;
+# we can see that we have a person in our first row with id 1 as the primary key.
+
+# lets add another person with the same id
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1, 'Fake', 'Account', 'Male', '2020-03-01', 'fakeaccount@blacknet.boom', 'RUSSIA');
+
+# we can see that we are getting an error.
+ERROR:  duplicate key value violates unique constraint "person_pkey"
+DETAIL:  Key (id)=(1) already exists.
+# That means we cant insert two rows with a single primary key in a database.
+
+# What if we want to drop that unique constraint "person_pkey"?
+# we can do that by altering the table
+-> ALTER TABLE person DROP CONSTRAINT person_pkey;
+
+# now if we describe the table again
+-> \d person;
+# we can see that there is no primary key iin that table
+
+# now if we insert the previous row again,
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1, 'Fake', 'Account', 'Male', '2020-03-01', 'fakeaccount@blacknet.boom', 'RUSSIA');
+
+# Now if we print the person row who have 1 id?
+-> SELECT * FROM person WHERE id = 1;
+
+
+
+***Adding Primary keys
+# lets add the primary key back,
+-> ALTER TABLE person ADD PRIMARY KEY (id);
+# here we only need the id as the primary key, so we used that.
+# but we can add more columns as the primary key.
+
+# here we are getting an error
+ERROR:  could not create unique index "person_pkey"
+DETAIL:  Key (id)=(1) is duplicated.
+# This is because we cannot add that column to the primary key which don't have unique values.
+
+# to fix this we need to delete one record(row)
+-> DELETE FROM person WHERE first_name = 'Fake';
+
+# Now if we try that again,
+-> ALTER TABLE person ADD PRIMARY KEY (id);
+
+# and if we describe the table,
+-> \d person;
+
+# we can see that we have the primary key and the unique constraint 'person_pkey'.
