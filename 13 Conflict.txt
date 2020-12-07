@@ -1,0 +1,113 @@
+***On Conflict do nothing.
+# as we have unique primary key constraint, we cannot add a record with duplicate id.
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1, 'Fake', 'Account', 'Male', DATE '2020-03-01', 'fakeaccount@blacknet.boom', 'RUSSIA');
+# it will give us error.
+ERROR:  duplicate key value violates unique constraint "person_pkey"
+DETAIL:  Key (id)=(1) already exists.
+# but what if we dont want to see this type of error message?
+# we can use on conflict keyword
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1, 'Fake', 'Account', 'Male', DATE '2020-03-01', 'fakeaccount@blacknet.boom', 'RUSSIA')
+ON CONFLICT(id) DO NOTHING;
+# here we need to check the conflict based on the id column. 
+
+# we can also perform on conflict for email column,
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1001, 'Fake', 'Account', 'Male', DATE '2020-03-01', 'Sydneyley@gmail.com', 'RUSSIA')
+ON CONFLICT(email) DO NOTHING;
+
+# but this wont work in those columns which dont have unique constraint.
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1001, 'Fake', 'Account', 'Male', DATE '2020-03-01', 'Sydneyley@gmail.com', 'RUSSIA')
+ON CONFLICT(first_name) DO NOTHING;
+
+# we are getting an error.
+ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+
+
+***Upsert
+# sometimes user might submit differnt values for the columns,
+# and that may cause conflict.
+# in that case, we may not want to do nothing,
+# instead we can take the latest values.
+
+# so we can update the conflicted values by,
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1, 'Pia', 'Van Zon', 'Female', '2020-03-06', 'piapia0@si.edu.hor', 'Brazil')
+ON CONFLICT(id) DO UPDATE SET email = EXCLUDED.email;
+
+# here email is related to the original email;
+# and EXCLUDED.email is related to the second email which created conflict.
+
+# we can see that if the update successfully performed or not.
+-> SELECT * FROM person WHERE id = 1;
+
+# Not only email we can update all the values,
+-> INSERT INTO person (
+    id,
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email,
+    country_of_birth
+)
+VALUES (1, 'PiaPia', 'Van Zonathan', 'Male', '2019-03-06', 'piapia0@si.edu.hor', 'China')
+ON CONFLICT(id) DO UPDATE SET 
+first_name = EXCLUDED.first_name,
+last_name = EXCLUDED.last_name,
+gender = EXCLUDED.gender,
+date_of_birth = EXCLUDED.date_of_birth,
+email = EXCLUDED.email,
+country_of_birth = EXCLUDED.country_of_birth;
+
+# if we select this row,
+-> SELECT * FROM person WHERE id = 1;
+# we can see that every update performed successfully.
+
+# here we can see that we are adding a new record,
+# if it present just UPDATE the previous one,
+# otherwise INSERT a new record.
+# so this is named UPDATE + INSERT = UPSERT.

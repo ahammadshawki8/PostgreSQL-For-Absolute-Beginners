@@ -1,0 +1,20 @@
+***Adding records
+# we have seen it earlier.
+
+
+
+***Delete Records
+# in most cases, we will use the primary keys in the where clause to delete records.
+-> delete everything            -> DELETE FROM person; [very careful]
+-> delete the first record      -> DELETE FROM person WHERE id = '1';
+-> delete all female of poland  -> DELETE FROM person WHERE gender = 'Female' AND country_of_birth = 'Poland';
+
+
+
+***Update Records
+# lets say we want to update ones nullable email to actual email.
+-> updating all email           -> UPDATE person SET email = 'Sydneyley@gmail.com';
+-> updating specific email      -> UPDATE person SET email = 'Sydneyley@gmail.com' WHERE id = 2;
+-> updating multiple columns    -> UPDATE person SET first_name = 'Mr.Syd', last_name = 'Prank' WHERE id = 2;
+
+[Be careful when we delete or update records we must use WHERE clause]
