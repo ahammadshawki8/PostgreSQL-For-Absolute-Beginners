@@ -1,0 +1,133 @@
+***What is Relationship & Foreign Key
+# we have tow tables right row.
+# what if we want to create a relation between person and cars?
+# now the naive method is to create another table which will have all the columns of person and car.
+
+# now this is bad, because postgres is a relational database.
+# this means we can have multiple tables and connect them together based on a foreign key.
+
+# so the rules we will follow ->
+    # 1. person has car
+    # 2. a person can have only one car
+    # 3. a car can belong to only one person
+
+# we can add another column (car_id) in the person table which will reference the primary key of car.
+# and the new column is called foreign key.
+# SO, a foreign key is a column which references the primary key of another table.
+# in order to make this work, the type of the foreign key and the primary key needs to be same.
+
+
+
+***Adding Relationship
+-> describe the tables in our database -> \dt
+
+# First we will drop these tables and create them from scratch.
+-> DROP TABLE person;
+-> DROP TABLE car;
+
+# now if we check for relations,
+-> \dt
+# we can see that no relations found.
+
+# Now open the person-car.sql file.
+# there we will add the foreign key line.
+-> car_id BIGINT REFERENCES car (id),
+-> UNIQUE(car_id)
+# here we haven't used BIGSERIAL, because BIGINT and BIGSERIAL are equal. 
+# but the only differnce is BIGSERIAL automatically maintain a sequencing that we don't need here.
+# we also haven't use NOT NULL because a person may not have a car.
+# and REFERENCES is the keyword to create foreign key, 
+# 'car' is the table name and id is the primary key column of car table.
+# we used UNIQUE constraint because a car can belong to one person only. 
+
+# Now if we create the person table first it will give us an error.
+ERROR:  relation "car" does not exist
+# because we haven't created the car table.
+
+# Now, if we run that file.
+# we can see that we are successful.
+
+# lets see the relations of our database
+-> \dt;
+# lets see all the records of our person and car table
+-> SELECT * FROM car;
+-> SELECT * FROM person;
+# we can see that we have a new column car id which we haven't assigned to any value.
+# and if we describe this table,
+-> \d person;
+# we can see that we have a new unique constraint.
+"person_car_id_key" UNIQUE CONSTRAINT, btree (car_id)
+# and a foreign key constraint
+Foreign-key constraints:
+    "person_car_id_fkey" FOREIGN KEY (car_id) REFERENCES car(id)
+
+
+***Updating Forign key columns
+# now lets assign two cars to two people
+-> UPDATE person SET car_id = 2 WHERE id = 1;
+-> UPDATE person SET car_id = 1 WHERE id = 2;
+
+# now if we select everything from person,
+-> SELECT * FROM person;
+# we can see that we have assigned succesfully.
+
+# now if we try to assign car 2 to the person 3.
+-> UPDATE person SET car_id = 2 WHERE id = 3;
+# we can see that we are getting an error,
+ERROR:  duplicate key value violates unique constraint "person_car_id_key"
+DETAIL:  Key (car_id)=(2) already exists.
+
+# so, our unique constraint is working.
+# this means a car can belong to a single person.
+
+# we can see that we have only 2 cars,
+# lets reference car 3 (which does not exists) to person 3.
+-> UPDATE person SET car_id = 3 WHERE id = 3;
+# we can't to it as we are getting an error.
+ERROR:  insert or update on table "person" violates foreign key constraint "person_car_id_fkey"
+DETAIL:  Key (car_id)=(3) is not present in table "car".
+
+# and thats the power of foreign keys.
+# it means we can only assign a foreing key if there is a relation in other table.
+
+
+
+***Inner Joins
+# inner joins is an effective way of combining two table.
+# inner joins take whatever is common in both tables.
+# so if we have a foreign key in person table which is related to a record of car table,
+# then inner join will give us that record.
+
+# so lets join
+-> SELECT * FROM person JOIN car ON person.car_id = car.id;
+# here we are using inner join on all of the records, so *
+# we are joining car with person, so JOIN car,
+# and the condition is car_id column of person (person.car_id) is equal to id column of car table (car.id)
+# so we used, ON person.car_id = car.id;
+
+# if we can read the table properly, we can on the expanded display.
+-> \x ;
+
+# here inner join returns a new table, we can select different columns from it.
+-> SELECT person.first_name, person.last_name, car.make, car.model, car.price
+-> FROM person JOIN car ON person.car_id = car.id;
+
+
+
+***Left Joins
+# the differnce between inner join and left join is
+# left join combine all the rows from first table (person) 
+# either they have a relation to second table (car) or not
+# again, it also specify the related columns from car table.
+
+# lets perform a left join
+-> SELECT * FROM person LEFT JOIN car ON person.car_id = car.id;
+# we can see that the 3rd person who don't have a car is also included but 
+# because oof his not having a car, the other columns of his record is blank.
+
+# we can create relation with foreign keys in multiple tables 
+# and can also perform joins on multiple tables.
+
+
+
+***Deleting Records With Foreign Keys

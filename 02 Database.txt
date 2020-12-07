@@ -1,14 +1,15 @@
 ***Create
 # Every single command in psql atarts with a backslash. \ 
--> opening PSQL in cmd or powershell -> psql -U user_name
--> For quiting psql -> \q
--> For clear screen -> \! cls
--> For exiting current session -> q
--> for entering again -> psql
--> for help -> \h
--> for more help -> \?
--> list of databases -> \l
--> creating database -> CREATE DATABASE database_name;
+-> opening PSQL in cmd or powershell 	-> psql -U user_name
+-> For quiting psql 					-> \q
+-> For clear screen 					-> \! cls
+-> For exiting current session 			-> q
+-> for entering again 					-> psql
+-> for help 							-> \h
+-> for more help 						-> \?
+-> expanded display on/off 				-> \x
+-> list of databases 					-> \l
+-> creating database 					-> CREATE DATABASE database_name;
 
 *** Connect
 	psql -h hostname -p port -U username -W password database_name
