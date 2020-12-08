@@ -1,0 +1,84 @@
+***Serial & Sequence
+# we have already used the BIGSERIAL data type in our table.
+# it is a special datatype which auto incriments a number.
+
+# if we describe our person table,
+-> \d  person;
+# we can see that we have BIGINT datatype instead of BIGSERIAL.
+# but the special thing is we have a sequence here,
+nextval('person_id_seq'::regclass)
+
+# letest select this sequence,
+-> SELECT * FROM person_id_seq;
+
+# we can see the last_value ue is 3 meaning the last id of person table is 3, 
+# log_cnt is 30 and is_callable is t meaning TRUE.
+
+# we can also call the nextval function.
+-> SELECT nextval('person_id_seq'::regclass);
+# we can see that the next value is 4.
+# if we run that again, we can see it is 5, then 6 7......
+# it is simmilar to next() function of python.
+
+# now if we select the sequence again,
+-> SELECT * FROM person_id_seq;
+# we can see that the last_value  is 7
+
+# this means though there are 3 people, the next person who will be inserted in this table will have an id of 8.
+# because we have called the nextval() function several times.
+# so lets try that,
+-> insert into person (
+    first_name, 
+    last_name, 
+    gender, 
+    date_of_birth, 
+    email, 
+    country_of_birth
+) 
+values ('Sandro', 'Kalinke', 'Male', '2020-02-19', 'skalinkei@craigslist.org', 'Japan');
+
+# now if we select all from person,
+-> SELECT * FROM person;
+# we can see that the new person have an id of 8.
+
+# so sequences are simply BIGINT or INT depanding on whether we use BIGSERIAL or SERIAL.
+SERIAL      <->     INT
+BIGSERIAL   <->     BIGINT
+# the difference between int and bigint is int requires 32 bit and bigint requires 64 bit.
+# if we need to work with more data and have a good and fast server we should use bigint.
+# otherwise, for small database int is a better option.
+
+# we can also restart the actual value with the sequences.
+# for doing that lets call the nextval() sevaral time.
+-> SELECT nextval('person_id_seq'::regclass);
+-> SELECT nextval('person_id_seq'::regclass);
+-> SELECT nextval('person_id_seq'::regclass);
+-> SELECT nextval('person_id_seq'::regclass);
+
+# now if we select the sequence.
+-> SELECT * FROM person_id_seq;
+
+# now we can see that the last_value is 13.
+# but as our original last vallue was 8, we want to restart the counting from 9.
+# for restarting,
+-> ALTER SEQUENCE person_id_seq RESTART WITH 9;
+
+# now if we select the sequence,
+-> SELECT * FROM person_id_seq;
+# we can see that the last_value is 9.
+
+# now if we add another person in this table,
+-> insert into person (
+    first_name, 
+    last_name, 
+    gender, 
+    date_of_birth, 
+    email, 
+    country_of_birth
+) 
+values ('Ashia', 'McCourtie', 'Female', '2020-01-07', 'amccourties@spotify.com', 'China');
+
+# and select all from person,
+-> SELECT * FROM person;
+
+# we can see that we successfully restarted the sequence.

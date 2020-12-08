@@ -1,0 +1,9 @@
+***Extensions
+# postgres is designed to be easily extensible.
+# so, we can load extensions to tables like features which are built in.
+# basically extensions are functions that can add extra functionality to our database.
+
+# we can view the list of available database,
+-> SELECT * FROM pg_available_extensions;
+# we can see that we have 86 extensions here.
+# we can see the extensions name, version and comment.
