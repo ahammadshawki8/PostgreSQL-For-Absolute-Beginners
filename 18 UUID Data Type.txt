@@ -1,1 +1,96 @@
 ***What is UUID Data Type?
+# UUID -> Universal Unique Identifiers
+# it allows us to have a guerantee of a unique idenifier whenever a new identifier is generated.
+# the cool thing about is it is globally unique.
+# which means the collisions is pretty much impossible.
+# we can learn more about uuids using this link:
+https://en.wikipedia.org/wiki/Universally_unique_identifier#:~:text=A%20universally%20unique%20identifier%20(UUID,%2C%20for%20practical%20purposes%2C%20unique.
+
+# they have different versions too.
+# lets use these with postgres.
+
+
+
+***Installation
+# first lets us see availbale extensions,
+-> SELECT * FROM pg_available_extensions;
+# we will find this extension,
+uuid-ossp           | 1.1             |                   | generate universally unique identifiers (UUIDs)
+
+# to use uuids we need to install this extension.
+-> CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+# here IF NOT EXISTS ensure that we don't download a extension which is already downloaded.
+# and NOTE that we have to use " for this extensions, this is not a string.
+
+# we can see that we have created the extensions.
+# now if we see all available extensions,
+-> SELECT * FROM pg_available_extensions;
+uuid-ossp           | 1.1             | 1.1               | generate universally unique identifiers (UUIDs)
+# we can see that we have the latest 1.1 version installed in our device.
+
+
+
+
+***How to use
+# for using a uuid, we have to invoke a function,
+# to see(describe) all our available functions we can,
+-> \df ;
+
+# and we want to use the completely random version4 id.
+# we can use that by,
+-> SELECT uuid_generate_v4();
+# everytime we run this command we will get a unique id.
+-> SELECT uuid_generate_v4();
+
+# so this characteristics makes uuids a good candidate for the primary keys of our table.
+# another advantage to use uuids is it makes the hackers work hard if try to hack our database.
+# another advantage is that we can migrate data with any databases without any conflicts as they are globally unique.
+
+
+
+***UUID As Primary Keys
+# lets change both person and car table to use uuids instead of BIGSERIAL as their primary key.
+# first we need to open person-car-2.sql file,
+# here we change the BIGSERIAL to UUID datatype for id in both tables.
+# and lets change the id column name,
+id[person]  <->     person_uuid
+id[car]     <->     car_uuid
+# and the foreign key dont reference to a BIGINT so it has to be UUID
+# and change the foreign key name from car_id to car_uuid.
+# and also change the UNIQUE(car_id) constraint to UNIQUE(car_uuid)
+# now we have to change the inserts.
+# before ussing uuids we were not explicitely inserting id because it automatically insert that for us.
+# but now we have to insert uuids explicitely.
+# the value for uuids will be this function 
+# uuid_generate_v4()
+
+# now lets drop the the two tables,
+-> DROP TABLE person;
+-> DROP TABLE car;
+
+# now lets execute person-car-2.sql file.
+# we can see that we are successful.
+
+# now lest select all from person and from car.
+-> SELECT * FROM person;
+-> SELECT * FROM car;
+
+# now lets assign some cars
+-> UPDATE person SET car_uuid = 'bcdc41e3-4c81-48ae-8adf-376dccd68cda' WHERE person_uuid = 'b3263327-4a08-4007-baa9-fed963033ef4';
+-> UPDATE person SET car_uuid = 'b69b3484-6b72-4e9a-955a-776a0fd724f9' WHERE person_uuid = '5e1d2609-5fad-45e0-a960-23e87df1c87f';
+# remember that, the uuid must be in quotes.
+# we can see that it works
+
+
+# Now lets perform a LEFT JOIN
+-> SELECT * FROM person LEFT JOIN car ON person.car_uuid = car.car_uuid;
+# we can see that we are successful
+
+# but we have 2 columns which are same car_uuid.
+# so we can join them in another method so that we not include the extra column,
+-> SELECT * FROM person LEFT JOIN car USING(car_uuid);
+# USING function will only work if the foreign key and the primary key have the same name.
+
+# we can also see who dont have a car from this left join.
+-> SELECT * FROM person LEFT JOIN car USING(car_uuid) WHERE car.* IS NULL;
+# simply the person who dont have a car, all the columns of car table will be null for that person in a left join.

@@ -8,6 +8,7 @@
 -> for help 							-> \h
 -> for more help 						-> \?
 -> expanded display on/off 				-> \x
+-> comments on sql						-> -- This is a comment. It wont effect the code.
 -> list of databases 					-> \l
 -> creating database 					-> CREATE DATABASE database_name;
 
