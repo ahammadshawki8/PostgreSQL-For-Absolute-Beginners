@@ -1,0 +1,18 @@
+***Exporting Query Results to CSV
+# now we will see how to generatea csv with postgres.
+
+# first we will create a query by selecting data from our table. 
+-> SELECT * FROM person LEFT JOIN car ON person.car_id = car.id ORDER by person.id;
+
+# we can now copy the results and paste it in a specific format.
+-> \copy (SELECT * FROM person LEFT JOIN car ON person.car_id = car.id ORDER by person.id) TO 'F:/Study_Work/Python/Python WorkSpace/17. PostgreSQL/# Created Files/results.csv' DELIMITER ',' CSV HEADER; 
+
+# Note that all the command should be in one line and  we need to use / for directory path.
+# here TO is used for the location we need to paste our query results,
+# Delimeter ',' means it will be a comma seprated file.
+# CSV is the file format
+# HEADER means we want to include headers
+
+# now lets open the csv file.
+# we can see we have successfully created that csv file.
+# this is how we can generate csv file from postgres.

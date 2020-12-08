@@ -131,3 +131,49 @@ DETAIL:  Key (car_id)=(3) is not present in table "car".
 
 
 ***Deleting Records With Foreign Keys
+# first lets add a new car to our car table.
+-> INSERT INTO car (
+    id, 
+    make, 
+    model, 
+    price
+) 
+VALUES (3, 'Mazda', 'RX-8', '27473.51');
+
+# now also add another person to our person table,
+-> INSERT INTO person (
+    id,
+    first_name, 
+    last_name, 
+    gender, 
+    date_of_birth, 
+    email, 
+    country_of_birth
+) 
+VALUES (4, 'Tatiana', 'Hansman', 'Female', '2020-05-07', null, 'Belarus');
+
+
+# now lets assign the new car to the new person.
+-> UPDATE person SET car_id = 3 WHERE id = 4;
+
+# now if we want to delete the new car, it won't work.
+-> DELETE FROM car WHERE id = 3;
+# it give us an error,
+ERROR:  update or delete on table "car" violates foreign key constraint "person_car_id_fkey" on table "person"
+DETAIL:  Key (id)=(3) is still referenced from table "person".
+
+# so we have to first remove the new person's foreign key
+# which is referenced to the new car
+# in order to delete the new car.
+
+# so we have 2 options ->
+    # 1. delete the new person
+    # 2. update the new person's car_id reference to null.
+
+# so lets delete the new person,
+-> DELETE FROM person WHERE id = 4;
+# now we can easily delete the new car.
+-> DELETE FROM car WHERE id = 3;
+
+
+[DELETING DATA WITHOUT KNOWING WHAT YOU'RE DOING CAN BE VERY COSTLY]
