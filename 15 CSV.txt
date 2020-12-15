@@ -6,10 +6,11 @@
 
 # we can now copy the results and paste it in a specific format.
 -> \copy (SELECT * FROM person LEFT JOIN car ON person.car_id = car.id ORDER by person.id) TO 'F:/Study_Work/Python/Python WorkSpace/17. PostgreSQL/# Created Files/results.csv' DELIMITER ',' CSV HEADER; 
+# we can also use the COPY command instead of \copy
 
 # Note that all the command should be in one line and  we need to use / for directory path.
 # here TO is used for the location we need to paste our query results,
-# Delimeter ',' means it will be a comma seprated file.
+# Delimiter ',' means it will be a comma seprated file.
 # CSV is the file format
 # HEADER means we want to include headers
 

@@ -51,5 +51,56 @@ with psycopg2.connect(host = "localhost", port = "5432", database = "test", user
     cur2.close()
     # we can't use that any more.
 
+
+    cur3 = conn2.cursor()
+    # executing a command
+    cur3.execute("SELECT * FROM person;")
+    print(cur3.fetchall())
+
+    # execute manay commands
+    # cur3.executemany()
+    # but this function is too slow. 
+    # So, the official documentation recommend to use the execute() command in a loop.
+    cur3.close()
+
+    # now we will learn about different types of fetch*() methods.
+    cur4 = conn2.cursor()
+    cur4.execute("SELECT * FROM person;")
+    # fetchone() only fetch one row each time.
+    print("\n")
+    print(cur4.fetchone())
+    print(cur4.fetchone())
+
+    # fetchall() fetches all the existing rows at a time.
+    print("\n")
+    print(cur4.fetchall())
+
+    cur4.execute("SELECT * FROM car;")
+    # fetchmany() helps us to fetch mulple existing rows.
+    print("\n")
+    print(cur4.fetchmany(2))
+    cur4.close()
+
+    cur5 = conn2.cursor()
+    cur5.execute("SELECT * FROM person;")
+    # how many row()
+    print(cur5.rowcount)
+
+    # current row number (indexing starts with 0)
+    print(cur5.rownumber)
+
+    # id last row that was inserted?
+    print(cur5.lastrowid)
+
+    # see the query
+    print(cur5.query)
+
+    # see the status message?
+    print(cur5.statusmessage)
+    
+    # commiting the result 
+    conn2.commit()
+    # remember to commit.
+
 # closing the connection
 conn2.close()
