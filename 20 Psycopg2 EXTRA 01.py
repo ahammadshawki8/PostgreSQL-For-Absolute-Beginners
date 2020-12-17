@@ -14,6 +14,7 @@ passw = os.environ.get("POSTGRES_PASSWORD")
 with psycopg2.connect(host = "localhost", port = "5432", database = "test", user = "postgres", password = passw) as conn1:
     # now we can do specific stuffs
     cur = conn1.cursor()
+    # we can also use 'with' statement with cursors and we have to close it manually as well.
     cur.execute("SELECT country_of_birth FROM person ORDER BY country_of_birth;")
     rows = cur.fetchall()
     for row in rows:
