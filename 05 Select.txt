@@ -123,3 +123,9 @@ SELECT * FROM table_name WHERE column1_name = 'expected_data1' AND (column2_name
 
 # Here we can use the ilike command. it simply ignores casing.
 -> SELECT * FROM person WHERE country_of_birth ILIKE 'b%';
+
+
+
+# Extra Tip
+# We can insert to a table by selecting infos from other table.
+-> INSERT INTO person SELECT * FROM have_not_created_table WHERE age > 30;

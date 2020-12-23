@@ -43,6 +43,34 @@ VALUES ('Ahammad', 'Shawki', 'Male', '2004-12-28', 'ahammadshawki8@gmail.com');
 # we have to use single quotes for strings.
 # we can see that the id(BIGSERIAL) is auto incrimented
 
+# Inserting multiple rows
+# we can see that everytime we need to add INSERT INTO, which is not great.
+# so we can just
+INSERT INTO person (
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email
+)
+VALUES ('Ready', 'Set', 'Male', '2003-11-20', 'readysetgo@gmail.com'),
+VALUES ('Max', 'Cola', 'Female', '2007-12-19', 'cocacola2@hotmail.com'),
+VALUES ('Rowdy', 'Boss', 'Male', '2000-10-25', 'bossishere@yahoo.com'); 
+
+# if we want to see the id of our newly created row we can just use the RETURNING keyword,
+INSERT INTO person (
+	first_name,
+	last_name,
+	gender,
+	date_of_birth,
+	email
+)
+VALUES ('Rajuk', 'Uttara', 'Male', '2004-11-20', 'bestschool@rumc.net') RETURNING id;
+# we can not only return the id, but also all(*) and other columns too.
+
+# if we insert values of all the fields then we don't need to mention their name.
+INSERT INTO person VALUES ('Rakib', 'Ullah', 'Male', '2000-08-10', 'ullah99@grameen.net');
+
 
 # Lets insert a thousand more people to our table and also add a new column
 # we are going to use the Mockaroo website

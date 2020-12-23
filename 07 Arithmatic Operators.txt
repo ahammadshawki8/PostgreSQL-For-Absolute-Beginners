@@ -28,6 +28,18 @@
 -> SELECT 10 * (2 - 8);
 -> SELECT 10 * (2 + (8 + 7 * 6));
 
+# Extra Tips
+# Arrays in postgreSQL
+-> SELECT ARRAY[1,2,3];
+-> SELECT '{1,2,3}';
+# Multi dimentional
+-> SELECT ARRAY[ARRAY[1,2],ARRAY[3,4]];
+-> SELECT '{{1,2},{3,4}}';
+
+# Character Length
+-> SELECT CHAR_LENGTH('abcde');
+
+
 
 
 *** ROUND
@@ -46,3 +58,35 @@
 *** Alias
 # Alias is used for overriding any column name
 -> SELECT id, make, model, price AS original_price, ROUND((price * 0.1), 2) AS discount, price - ROUND((price * 0.1), 2) AS discounted_price FROM car; 
+
+***Creating table using the AS keyword.
+# we can use the as keyword for creating table too;
+-> CREATE TABLE polish_people AS SELECT * FROM person WHERE country_of_birth = 'Poland';
+
+
+
+
+# With keyword
+# with keyword is used for avoid repetion of big lines of sql.
+# it is also used for slicing
+
+# For eaxmple if we want to slice an array,
+-> WITH temp AS (SELECT ARRAY[0,1,2,3] sliced) SELECT sliced[1] FROM temp;
+
+# here temp is the original array and sliced is used for slicing
+# we can also use range in slicing.
+-> WITH temp AS (SELECT ARRAY[0,1,2,3] sliced) SELECT sliced[1:3] FROM temp;
+# here range in inclusive.
+
+# getting information from array.
+# printing array dimensions (as text) 
+-> WITH arr AS (SELECT ARRAY[0,1,2] int_arr) SELECT ARRAY_DIMS(int_arr) FROM arr;
+-> WITH arr AS (SELECT ARRAY[ARRAY[0,1],ARRAY[2,3]] int_arr) SELECT ARRAY_DIMS(int_arr) FROM arr;
+
+# length of an array dimension 
+-> WITH arr AS (SELECT ARRAY[0,1,2] int_arr) SELECT ARRAY_LENGTH(int_arr,1) FROM arr;
+# here we used 1 for mentioning the dimension
+
+# total number of elements across all dimensions 
+-> WITH arr AS (SELECT ARRAY[0,1,2] int_arr) SELECT CARDINALITY(int_arr) FROM arr;
+-> WITH arr AS (SELECT ARRAY[ARRAY[0,1],ARRAY[2,3]] int_arr) SELECT CARDINALITY(int_arr) FROM arr;

@@ -60,3 +60,27 @@ https://www.postgresql.org/docs/current/datatype-datetime.html
 # we can use AGE() function, it takes two argument, current date and date_of_birth.
 -> SELECT id, first_name, last_name, (AGE(NOW(), date_of_birth)) AS age FROM person ORDER by age DESC;
 # we can also extract the specific fields from here.
+
+
+***Cast a Timestamp or Interval to string
+# we can do that by TO_CHAR() function.
+
+# first lets select the timestamp
+-> SELECT '2016-08-12 16:40:32'::TIMESTAMP;
+
+# now lets convert it to a string
+-> SELECT TO_CHAR('2016-08-12 16:40:32'::TIMESTAMP, 'DD Mon YYYY HH:MI:SSPM');
+# here the second arguement is for the formatting
+# DD -> Day number
+# Mon -> month abbreviated
+# YYYY -> 4 digit Year 
+# HH -> hour
+# MI -> minute
+# SS -> SECOND
+# PM -> AM or PM
+
+# to see all the formatting we can go to this link:
+"""https://www.postgresql.org/docs/current/functions-formatting.html"""
+
+# we can format as we want
+-> SELECT TO_CHAR('2016-08-12 16:40:32'::TIMESTAMP, '"Today is "FMDay", the "DDth" day of the month of "FMMonth" of "YYYY');

@@ -29,6 +29,7 @@ https://www.postgresql.org/docs/9.5/datatype.html
 -> to see all the tables in a database -> \d 
 \d means describe
 -> to see all the columns in a table -> \d table_name
+-> to see extended informations about a table -> \d+ table_name
 
 
 ***Creating table with constraints
@@ -56,3 +57,18 @@ CREATE TABLE person (
 -> deleting tables -> DROP TABLE table_name;
 
 NOTE: very carefull
+
+
+
+# Extra Tips
+# We can create unlogged tables so that we can make the tables considerably faster. 
+# Unlogged table skips writing WRITE-ahead log 
+# which means it's not crash-safe and unable to replicate.
+
+CREATE UNLOGGED TABLE person ( 
+	person_id BIGINT NOT NULL PRIMARY KEY, 
+	last_name VARCHAR(255) NOT NULL, 
+	first_name VARCHAR(255), 
+	address VARCHAR(255), 
+	city VARCHAR(255)
+);

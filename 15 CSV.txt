@@ -1,5 +1,21 @@
+***Importing Data From CSV
+# First we need to create a table
+-> CREATE TABLE copy_sample (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+# now we can add records from that csv file.
+-> COPY copy_sample FROM 'F:/Study_Work/Python/Python WorkSpace/17. PostgreSQL/# Created Files/sample.csv' Delimiter ',';
+
+# now we can select to see if the copy have been applied successfully or not.
+-> SELECT * FROM copy_sample;
+
+
+
+
 ***Exporting Query Results to CSV
-# now we will see how to generatea csv with postgres.
+# now we will see how to generate a csv with postgres.
 
 # first we will create a query by selecting data from our table. 
 -> SELECT * FROM person LEFT JOIN car ON person.car_id = car.id ORDER by person.id;

@@ -62,3 +62,8 @@ https://www.postgresql.org/docs/9.5/functions-aggregate.html
 
 # Now lets see the total sum by the actual car make
 -> SELECT make, SUM(price) FROM car GROUP BY make ORDER BY SUM(price) DESC;
+
+
+***String Aggregation
+# we can aggregate strings with STRING_AGG() function.
+-> SELECT STRING_AGG(first_name, ', ') AS Name, country_of_birth FROM person GROUP BY country_of_birth;
