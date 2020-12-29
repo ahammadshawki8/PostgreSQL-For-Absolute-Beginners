@@ -56,7 +56,11 @@ VALUES ("Ahammad Shawki", 500),
 VALUES ("Mohammad Rafiq", 450),
 VALUES ("Karib Islam", 400);
 
+# we can also display the trigger,
+SHOW TRIGGER double_marks
 
+# we can also delete the trigger
+DROP TRIGGER double_marks
 
 
 # there is another type of trigger in postgreSQL

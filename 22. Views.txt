@@ -1,0 +1,79 @@
+# What are views?
+# views means virtual tables. they don't exists in reality
+# we can create view by selecting fields from one and more tables which can have conditions.
+
+# Why they are useful?
+# they can reduce complexity
+	# specifically if we need to join more than 2 tables together
+# they can be used in securoty mechanism
+	# if we dont want the users to see passwords or other confedential records we can create a view.
+	# and approve querying on that view instead of the actual table.
+
+# Note that, 
+# view doesn't store any records, it only stores the defination of the table and fetches data from the table and shows the data
+# view is one type of query, most of the queries are temporary, but views are stored as parmnent query objects in the DB.
+
+
+# Creating views
+# first lets create 2 tables
+DROP TABLE IF EXISTS manager;
+
+CREATE TABLE manager (
+id SERIAL PRIMARY KEY NOT NULL,
+name TEXT NOT NULL,
+salary INT NOT NULL
+);
+
+INSERT INTO manager (name, salary) VALUES ('Rakib Bashar', 150000);
+INSERT INTO manager (name, salary) VALUES ('Bad Trangit', 250000);
+INSERT INTO manager (name, salary) VALUES ('Taxonomical Tax', 200000);
+
+
+DROP TABLE IF EXISTS employee;
+
+CREATE TABLE employee (
+id SERIAL PRIMARY KEY NOT NULL,
+name TEXT NOT NULL,
+language TEXT NOT NULL,
+salary INT NOT NULL,
+manager_id INT NOT NULL REFERENCES manager (id)
+);
+
+INSERT INTO employee (name, language, salary, manager_id) VALUES ('Ahammad Shawki', 'Python', 100000, 1);
+INSERT INTO employee (name, language, salary, manager_id) VALUES ('Ben Awad', 'JavaScript', 25000, 1);
+INSERT INTO employee (name, language, salary, manager_id) VALUES ('Timothy Ranger', 'Go', 20000, 2);
+INSERT INTO employee (name, language, salary, manager_id) VALUES ('Daniel Max', 'Python', 50000, 1);
+INSERT INTO employee (name, language, salary, manager_id) VALUES ('Iniac Islam', 'Java', 80000, 3);
+INSERT INTO employee (name, language, salary, manager_id) VALUES ('Chirs Campbell', 'C++', 80000, 2);
+INSERT INTO employee (name, language, salary, manager_id) VALUES ('Danny Tompson', 'PHP', 10000, 3);
+
+
+# Now that we have 2 tables lets create a view on single table
+CREATE VIEW more_salary AS SELECT * FROM employee WHERE employee.salary > 65000;
+
+# SELECTING FROM VIEW
+SELECT * FROM more_salary;
+
+# deleting view
+DROP more_salary;
+
+
+# Now lets create a view on multiple tables
+CREATE VIEW without_man3 AS 
+SELECT manager.id, manager.name AS manager_name, employee.id AS employee_id, employee.name AS employee_name, employee.language 
+FROM employee JOIN manager 
+ON employee.manager_id = manager.id;
+
+# here we can see that we have used manager and employee several times which is time-killing.
+# instead of that we can use alias which will represent the tables.
+# we can do that by,
+CREATE VIEW without_man3 AS 
+SELECT m.id, m.name AS manager_name, e.id AS employee_id, e.name AS employee_name, e.language 
+FROM employee e JOIN manager m 
+ON e.manager_id = m.id 
+WHERE e.manager_id != 3
+ORDER BY m.id ASC;
+
+# selecting and droping
+SELECT * FROM without_man3;
+DROP VIEW without_man3;
