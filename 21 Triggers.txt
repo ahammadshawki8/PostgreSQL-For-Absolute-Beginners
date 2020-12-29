@@ -1,0 +1,65 @@
+# Triggers are very useful for automating task.
+# suppose we have to send verification mail to each new users of our database.
+# for that purpose, we need automation.
+
+# And we can do that by creating a function pl/pgsql
+# then use a trigger that will execute the function before each new row addition.
+
+# triggers can be specified to fire:
+	# BEFORE -> the operation is attempted on a row before insert, update, validate, delete or truncate
+	# AFTER -> the operation is attempted after completing insert, update or delete
+	# INSTEAD OF -> the operation is attempted to perform something else in the time of insert, update or delete
+
+# triggers that is marked:
+	# FOR EACH ROW is called once for every row that the operation modifies;
+	# FOR EACH STATEMENT is called once for any given operation
+
+# triggers structure
+CREATE TRIGGER 
+trigger_name
+BEFORE/AFTER/INSTEAD OF
+INSERT/UPDATE/DELETE
+ON
+table_name
+FOR EACH ROW/STATEMENT
+EXECUTE FUNCTION/PROCEDURE function_name();
+
+# we can't use triggers in postgreSQL without a trigger function.
+
+# steps in triggers
+	# create function
+	# create trigger
+	# test it
+
+
+# Example
+# first creating a table
+DROP TABLE IF EXISTS student;
+CREATE TABLE student (
+	id SERIAL NOT NULL PRIMARY KEY,
+	name TEXT NOT NULL,
+	marks INT NOT NULL
+);
+
+# Now we have to create a trigger function in pl/pgsql
+< Currently I don't know how to do that, check the triggers file in Python >
+
+# Now creating a trigger
+CREATE TRIGGER double_marks
+BEFORE INSERT ON student
+FOR EACH ROW
+EXECUTE FUNCTION sample_function();
+
+# testing that trigger
+INSERT INTO student (name, marks) 
+VALUES ("Ahammad Shawki", 500),
+VALUES ("Mohammad Rafiq", 450),
+VALUES ("Karib Islam", 400);
+
+
+
+
+# there is another type of trigger in postgreSQL
+# which is called event trigger
+# here we associate an event with this trigger
+# It is fired whenever the associated event occurs in the database.

@@ -12,7 +12,7 @@ CREATE TABLE table_name (
  	id INT,
 	first_name VARCHAR(50),
 	last_name VARCHAR(50),
-	gender VARCHAR(6),
+	gender VARCHAR(6) DEFAULT 'male',
 	date_of_birth DATE
 );
 
@@ -20,6 +20,8 @@ CREATE TABLE table_name (
 # VARCHAR(max_length) -> strings 
 # TIMESTAMP -> full date (including hour-minutes-seconds)
 # DATE -> full date (excluding hour-minutes-seconds)
+# here we can also set a default value by using the DEFAULT keyword.
+
 
 # all datatypes in postgres
 https://www.postgresql.org/docs/9.5/datatype.html

@@ -1,5 +1,5 @@
 ***Create
-# Every single command in psql atarts with a backslash. \ 
+# Every single command in psql starts with a backslash. \ 
 -> opening PSQL in cmd or powershell 	-> psql -U user_name
 -> For quiting psql 					-> \q
 -> For clear screen 					-> \! cls
@@ -12,6 +12,16 @@
 -> list of databases 					-> \l
 -> creating database 					-> CREATE DATABASE database_name;
 
+# when we are creating a database, by default we are copying the standard template named template1.
+# there is another template in postgreSQL named template0,
+# which gives us some more functionality over template1.
+# one is here we can mention the encoding we want to like in our database.
+-> creating database with encoding      -> CREATE DATABASE database_name WITH ENCODING = 'UTF8' TEMPLATE template0;
+
+# For more details about templates in PostgreSQL visit
+"""https://www.postgresql.org/docs/9.5/manage-ag-templatedbs.html"""
+
+
 *** Connect
 	psql -h hostname -p port -U username -W password database_name
 or, 
@@ -22,6 +32,7 @@ or,
 
 ***Delete
 -> deleting database -> DROP DATABASE database_name;
+-> deleting database if it exists -> DROP DATABASE IF EXISTS database_name;
 
 NOTE: If we REALLY want to delete our database, 
 then we must should have a BACKUP for that data.

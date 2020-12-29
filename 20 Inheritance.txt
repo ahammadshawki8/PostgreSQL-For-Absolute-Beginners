@@ -1,0 +1,53 @@
+# Creating parent table
+CREATE TABLE parent (
+    name TEXT NOT NULL,
+    age INT NOT NULL
+);
+
+# this table will look like this
+\d parent;
+
+               Table "public.parent"
+ Column |  Type   | Collation | Nullable | Default
+--------+---------+-----------+----------+---------
+ name   | text    |           | not null |
+ age    | integer |           | not null |
+
+
+
+
+
+# some parents have children, either the child go to school or not.
+# Creating child table for first catagory
+CREATE TABLE child_student (
+    school_name TEXT NOT NULL,
+    class INT NOT NULL
+)
+INHERITS (parent);
+
+# this table will look like this
+\d child_student;
+
+              Table "public.child_student"
+   Column    |  Type   | Collation | Nullable | Default
+-------------+---------+-----------+----------+---------
+ name        | text    |           | not null |
+ age         | integer |           | not null |
+ school_name | text    |           | not null |
+ class       | integer |           | not null |
+Inherits: parent
+
+
+
+# Creating another child table for second catagory
+CREATE TABLE child_notStudent () INHERITS (parent);
+
+# this table will look like this
+\d child_notStudent;
+
+          Table "public.child_notstudent"
+ Column |  Type   | Collation | Nullable | Default
+--------+---------+-----------+----------+---------
+ name   | text    |           | not null | 
+ age    | integer |           | not null |
+Inherits: parent

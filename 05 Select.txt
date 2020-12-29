@@ -126,6 +126,26 @@ SELECT * FROM table_name WHERE column1_name = 'expected_data1' AND (column2_name
 
 
 
+*** Common Table Expressions (WITH)
+# Common table expressions support extracting portions of larger queries.
+# Suppose we have a table named orders which have user_id, ordered_at, and orders_amount fields
+# and another table named users which also have user_id and some other fields
+# Now we want to join both of the tables where foreign key will be the user_id
+# but we want to group the the orders table by user_id and calculate how much each person ordered
+
+WITH sales AS (
+    SELECT 
+        orders.ordered_at,
+        orders.user_id,
+        SUM(orders.amount) AS total
+    FROM orders
+    GROUP BY orders.user_id
+)
+SELECT * FROM sales JOIN users ON user_id;
+
+# here the entire part in the brackets will work as sales.
+
+
 # Extra Tip
 # We can insert to a table by selecting infos from other table.
 -> INSERT INTO person SELECT * FROM have_not_created_table WHERE age > 30;

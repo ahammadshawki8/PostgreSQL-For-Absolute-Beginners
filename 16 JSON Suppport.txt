@@ -1,0 +1,124 @@
+# for using JSON format in our database we need to use the JSONB or JSON datatype.
+# The data types JSON and JSONB, as defined by the PostgreSQL documentation, are almost identical.
+# The key difference is that JSON data is stored as an exact copy of the JSON input text,
+# whereas JSONB stores data in a decomposed binary form; that is, not as an ASCII/UTF-8 string, but as binary code.
+
+# first lets create a table
+# for creating a pure JSON table,
+# we need to provide a single field with a JSONB format,
+CREATE TABLE mytable (DATA JSONB NOT NULL);
+
+# but most of the time we need to work with other formats along with the JSON format,
+# so we can create a mixed JSON table by
+DROP TABLE IF EXISTS books;
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    client TEXT NOT NULL,
+    DATA JSONB NOT NULL
+);
+
+# Now lets insert into book and populate the DB
+INSERT INTO books(client,DATA) VALUES (
+    'Joe', '{ "title": "Siddhartha", "author": { "first_name": "Herman", "last_name": "Hesse" } }' 
+),( 
+    'Jenny', '{ "title": "Dharma Bums", "author": { "first_name": "Jack", "last_name": "Kerouac" } }' 
+),( 
+    'Jade', '{ "title": "Años de soledad", "author": { "first_name": "Gabo", "last_name": "Marquéz" } }' 
+);
+
+# lets see everything from table
+SELECT * FROM books;
+
+
+
+# Now we can use the JSONB operators, -> and ->>
+# -> operator returns values out of JSON column
+
+SELECT client, DATA -> 'title' AS title FROM books;
+SELECT client, DATA -> 'title' AS title, DATA -> 'author' AS author FROM books;
+
+# the -> returns original JSON type which might be an object (with " ")
+# whereas the ->> returns text (without " ")
+
+SELECT client, DATA ->> 'title' AS title FROM books;
+SELECT client, DATA ->> 'title' AS title, DATA ->> 'author' AS author FROM books;
+
+
+
+# Returning nested objects
+# we can use the -> or ->> multiple times and chain the operations
+
+SELECT client, DATA -> 'author' -> 'last_name' as author FROM books;
+or,
+SELECT client, DATA -> 'author' ->> 'last_name' as author FROM books;
+# Note we can't use ->> before 'author', unless it will be a text and not operatable.
+
+
+
+# Filtering 
+
+SELECT client, DATA -> 'title' AS title FROM books WHERE DATA -> 'title' = '"Dharma Bums"';
+
+# NOTE that because of we used -> in the WHERE clause we need to use '"Dharma Bums"',
+# if we use ->> then we can change it to 'Dharma Bums'.
+
+SELECT client, DATA -> 'title' AS title FROM books WHERE DATA ->> 'title' = 'Dharma Bums';
+
+
+
+# Nested Filtering
+# pretty much same like nested Returning
+
+SELECT client, DATA -> 'title' AS title FROM books WHERE DATA -> 'author' ->> 'last_name' = 'Kerouac';
+
+
+
+# Working on real world example
+# lets create a new table
+
+CREATE TABLE events (
+    NAME VARCHAR(100) NOT NULL,
+    visitor_id VARCHAR(100) NOT NULL,
+    properties JSON NOT NULL,
+    browser JSON NOT NULL
+);
+
+# We’re going to store events in this table, like pageviews. 
+# Each event has properties, which could be anything (e.g. current page) 
+# and also sends information about the browser (like OS, screen resolution, etc)
+
+# Inserting into the table
+INSERT INTO events (NAME, visitor_id, properties, browser) VALUES
+( 'pageview', '1', '{ "page": "/" }',
+'{ "name": "Chrome", "os": "Mac", "resolution": { "x": 1440, "y": 900 } }' ),(
+'pageview', '2', '{ "page": "/" }',
+'{ "name": "Firefox", "os": "Windows", "resolution": { "x": 1920, "y": 1200 } }' ),( 'pageview', '1', '{ "page": "/account" }', '{ "name": "Chrome", "os": "Mac", "resolution": { "x": 1440, "y": 900 } }' ),(
+'purchase', '5', '{ "amount": 10 }',
+'{ "name": "Firefox", "os": "Windows", "resolution": { "x": 1024, "y": 768 } }' ),(
+'purchase', '15', '{ "amount": 200 }',
+'{ "name": "Firefox", "os": "Windows", "resolution": { "x": 1280, "y": 800 } }' ),(
+'purchase', '15', '{ "amount": 500 }',
+'{ "name": "Firefox", "os": "Windows", "resolution": { "x": 1280, "y": 800 } }'
+);
+
+# selecting everything
+SELECT * FROM events;
+
+
+# lets use the aggregate functions and see total browser usage
+SELECT browser ->> 'name' AS browser, COUNT(browser) FROM events GROUP BY browser ->> 'name';
+# here COUNT(browser) actually counting the name of the browser.
+
+# seeing total revenue per visitor
+SELECT visitor_id, SUM(CAST(properties ->> 'amount' AS INTEGER)) AS total FROM events 
+WHERE CAST(properties ->> 'amount' AS INTEGER) > 0 GROUP BY visitor_id;
+# here CAST() function actually CAST/CONVERT the datatypes.
+
+# avarage screen resolution
+SELECT AVG(CAST(browser -> 'resolution' ->> 'x' AS INTEGER)) AS height,
+AVG(CAST(browser -> 'resolution' ->> 'y' AS INTEGER)) AS WIDTH
+FROM events;
+# we can also round this values
+SELECT ROUND(AVG(CAST(browser -> 'resolution' ->> 'x' AS INTEGER)), 2) AS height,
+ROUND(AVG(CAST(browser -> 'resolution' ->> 'y' AS INTEGER)), 2) AS WIDTH
+FROM events;
